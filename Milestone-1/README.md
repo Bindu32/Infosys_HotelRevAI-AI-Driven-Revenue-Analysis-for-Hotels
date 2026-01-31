@@ -1,107 +1,189 @@
-# Infosys_HotelRevAI-AI-Driven-Revenue-Analysis-for-Hotels/Milestone-1
+# Infosys_HotelRevAI-AI-Driven Revenue Analysis for Hotels  
+**Milestone-1**
 
-### Project Statement:
-Hotels must understand their occupancy patterns, guest demographics, and pricing effectiveness to
-improve revenue. This project builds an analytical solution in Power BI to track room bookings, average
-daily rates, guest profiles, and seasonal trends. It helps hotel management make decisions around
-promotions, upselling, pricing strategies, and room optimization.
+---
 
-### Module - 1:
-#### Data Modeling and Ingestion
-- Task-1: Load booking, customer, and room data
-- Task-2: Build a star schema with Date, Room, Customer, Hotel branches
-- Task-3: Calculate booking duration, room category, and stay type
+## 📌 Project Statement
+Hotels must understand their occupancy patterns, guest demographics, and pricing effectiveness to improve revenue performance.  
+This project delivers an analytical solution using **Power BI** to monitor room bookings, Average Daily Rate (ADR), guest profiles, and seasonal trends. The insights generated support hotel management in making data-driven decisions related to **pricing strategies, promotions, upselling, and room optimization**.
 
-### Step - 1:
-- Loading dataset into PowerBI.
-- Transform the data then power query Editor opens.
-- Observe the features what are there, analyse them in what way they are useful.
-- Here we are going to check the data that is, is there any errors, all the data types of features are correctly represented or not. These all can be see by clicking view
+---
 
-### Step - 2:
-- I have noticed that , profit column is empty.
-- we fill profit column by applying formula.
-- Add column -> custom column -> formula
-- *profit* *=* *Total_Revenue* - *Total_cost*
+## 📦 Module 1: Data Modeling and Ingestion
 
-### Step - 3:
-#### Calculate booking duration
-- Add column -> custom column -> formula
-- #### booking_duration = checkin - checkout
-- booking duration depends on checkin and checkout
+### Tasks Overview
+- **Task 1:** Load booking, customer, and room data  
+- **Task 2:** Build a star schema with Date, Room, Customer, and Hotel Branch dimensions  
+- **Task 3:** Calculate booking duration, room category, and stay type  
 
-### Step - 4:
-#### Calculate stay_type
-- stay type is depends on booking duration , as it says about time. if booking duration is high then long stay , low - short stay.
-- Add column -> custom column -> formula
-- *stay_type* =
-- if [booking_duration] >= 6 then "long stay"
-  else if [booking_duration] < 4 then "short stay"
-  else "medium stay"
+---
 
-### Step - 5:
-#### Calculate room_category
-- room_category is calculated based on occupancy_rate feature.
-- room_category are of 3 types : Standard, Premium , Deluxe
-- Add column -> custom column -> formula
-- *room_category* =
-- if [occupancy_rate] >= 0.79 then "Deluxe"
-  else if [occupancy_rate] <= 0.75 then "Standard"
-  else "Premium"
-- Detect data type
+## 🔹 Step 1: Data Loading and Initial Exploration
+- Loaded the dataset into **Power BI**.
+- Opened **Power Query Editor** to transform the data.
+- Explored all available features and analyzed their relevance.
+- Verified data quality by checking:
+  - Missing values  
+  - Incorrect data types  
+  - Data consistency  
 
-### Task 3 : Calculate booking duration, room category, and stay type is completed
+---
 
-### Step - 6:
-#### Creating Data Dimension Table
-- Duplicate Fact_Bookings Table
-- Remove columns other than Date, Month, Season, Weekday, Holiday
-- Remove duplicates by selecting all features.
+## 🔹 Step 2: Profit Calculation
+- Observed that the **Profit** column was empty.
+- Created a calculated column using a custom formula:
+Profit = Total_Revenue – Total_Cost
 
-### Step - 7:
-#### Creating Room Dimension Table
-- Duplicate Fact_Bookings Table
-- Remove columns other than Occupancy_rate, ADR, room_category, Available_rooms
-- remove duplicates of selecting all columns
-- Add Index column and rename as room_id
+---
 
-### Step - 8:
-#### Creating Customer Table
-- Duplicate Fact_Bookings Table
-- Remove columns other than Guest_type, Guest_country, Market_segment, Average_Review_Score
-- Remove duplicates of selecting all columns
-- Add Index column
+## 🔹 Step 3: Booking Duration Calculation
+- Created a new column to compute booking duration.
+Booking_Duration = Checkout_Date – Checkin_Date
 
-### Step - 9:
-#### Creating Hotel Branch
-- The data is about only one hotel, so as per task, I have created 2 columns : Branch_id, Branch_name by "Enter data".
+- Booking duration directly depends on check-in and check-out dates.
 
-### Task-1 : Load booking, customer, and room data completed
+---
 
-### Step - 10:
-#### Building star schema
-- To build star schema,  we required a foreign key in fact table
-- Primary key in Dimension table , i.e , common column must there.
-- Therefore, we created room_id , customer_id, branch_id in fact_bookings table by applying merge queries.
-- merging fact_bookings with room, cutomer, hotel branch table individualy
-- close and apply
-- click o model view, and connect the dimension table to fact table in one to many cardinality.
+## 🔹 Step 4: Stay Type Classification
+- Defined **stay type** based on booking duration:
+  - Long Stay
+  - Medium Stay
+  - Short Stay
+Stay_Type =
+IF Booking_Duration >= 6 → "Long Stay"
+ELSE IF Booking_Duration < 4 → "Short Stay"
+ELSE → "Medium Stay"
 
-### Task-2 : Build a star schema with Date, Room, Customer, Hotel branches completed
+---
 
-### Visualizations ; Data Analysis
-- Click on Report view
-- I created card view of Total_Revenue, Profit , Bookings, ADR, Occupancy_rate.
-- From this analysis, we clearly get the data that, how efficiently hotel used, easily calculate expenses and we get finacial knowledge.
-- Line graph between Total revenue and days.
-- we observe that 5th and 7th day , total_revenue is high and 3,18, 30 th days have low revenue
-- page 2 : Pie chart is about how effieciently rooms are used
-- page 3: Clustered column chart between Bookings and stay type
-- I have shown 11 charts on Bookings vs stay type based on different features
-- we can see that UK customers are not for long stay.
-- In spring season, both long and medium stay approx. near to each other.
-- Most of the features says that maximum are willing to stay for long
-- page 4: Bar clustered chart between Total Revenue and Booking_channel
-- I have shown 12 charts on Total Revenue vs Booking_channel based on different features
-- Premium members most of them booked through OTA channel.
-- OTA channel total revenue is 10M, and Direct channel - 7M
+## 🔹 Step 5: Room Category Calculation
+- Room categories were derived based on **Occupancy Rate**.
+- Room categories include:
+  - Standard
+  - Premium
+  - Deluxe
+Room_Category =
+IF Occupancy_Rate >= 0.79 → "Deluxe"
+ELSE IF Occupancy_Rate <= 0.75 → "Standard"
+ELSE → "Premium"
+
+
+- Ensured correct data types after column creation.
+
+✅ **Task 3 completed:** Booking duration, stay type, and room category calculated.
+
+---
+
+## 🔹 Step 6: Date Dimension Table Creation
+- Duplicated the **Fact_Bookings** table.
+- Retained only the following columns:
+  - Date  
+  - Month  
+  - Season  
+  - Weekday  
+  - Holiday  
+- Removed duplicate records.
+
+---
+
+## 🔹 Step 7: Room Dimension Table Creation
+- Duplicated the **Fact_Bookings** table.
+- Retained:
+  - Occupancy_Rate  
+  - ADR  
+  - Room_Category  
+  - Available_Rooms  
+- Removed duplicates.
+- Added an **Index Column** as `Room_ID`.
+
+---
+
+## 🔹 Step 8: Customer Dimension Table Creation
+- Duplicated the **Fact_Bookings** table.
+- Retained:
+  - Guest_Type  
+  - Guest_Country  
+  - Market_Segment  
+  - Average_Review_Score  
+- Removed duplicates.
+- Added an **Index Column** as `Customer_ID`.
+
+---
+
+## 🔹 Step 9: Hotel Branch Dimension
+- Since the dataset contains only one hotel, a **Hotel Branch** table was manually created.
+- Added columns:
+  - Branch_ID  
+  - Branch_Name  
+
+---
+
+## 🔹 Step 10: Star Schema Design
+- Built a **star schema** by connecting dimension tables to the fact table.
+- Created foreign keys (`Room_ID`, `Customer_ID`, `Branch_ID`) using **Merge Queries**.
+- Established **one-to-many** relationships in **Model View**.
+
+✅ **Task 1 & Task 2 completed successfully.**
+
+---
+
+## 📊 Visualizations & Data Analysis
+
+### KPI Overview
+- Created KPI cards for:
+  - Total Revenue  
+  - Profit  
+  - Total Bookings  
+  - ADR  
+  - Occupancy Rate  
+
+These metrics provide a clear overview of hotel performance and financial efficiency.
+
+---
+
+### Revenue Trend Analysis
+- **Line Chart:** Total Revenue vs. Days
+- Observations:
+  - Highest revenue on **5th and 7th days**
+  - Lowest revenue on **3rd, 18th, and 30th days**
+
+---
+
+### Occupancy Analysis
+- **Pie Chart** used to visualize room utilization efficiency.
+- Helps evaluate how effectively rooms are occupied.
+
+---
+
+### Stay Type Analysis
+- **Clustered Column Chart:** Bookings vs. Stay Type
+- Created **11 visualizations** across different dimensions.
+- Key insights:
+  - UK customers generally prefer **short stays**
+  - During **spring season**, long and medium stays are nearly equal
+  - Most customer segments prefer **long stays**
+
+---
+
+### Booking Channel Analysis
+- **Clustered Bar Chart:** Total Revenue vs. Booking Channel
+- Created **12 visualizations** across different features.
+- Key insights:
+  - Premium members mostly book through **OTA channels**
+  - OTA Revenue: **10M**
+  - Direct Channel Revenue: **7M**
+
+---
+
+## ✅ Summary
+This milestone establishes a solid analytical foundation through:
+- Robust data modeling
+- Star schema implementation
+- Derived business metrics
+- Insightful visual dashboards
+
+The solution provides actionable insights into **revenue trends, customer behavior, stay patterns, and booking channels**, enabling smarter hotel revenue management decisions.
+
+---
+
+
