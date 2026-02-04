@@ -181,24 +181,94 @@ AVERAGEX(
 
 ```
 
-## Dashboard Visuals
-### 🔹 Forecast & Demand Analysis
-- Actual vs Forecasted Bookings
-- Forecasted Booking Trend Over Time
-- Forecast Confidence Range (Upper & Lower Bounds)
-- 
-###🔹 Cancellation & No-Show Analysis
-- Monthly Cancellation Rate and Cancelled Bookings
-- No-Show Trends by Month
+## 📊 Dashboard Interpretation & Insights
 
-### 🔹 KPIs
-- Total Bookings
-- Forecasted Demand
-- Cancellation Percentage
-- No-Show Count
+This dashboard focuses on **forecasting future hotel demand** and **analyzing cancellation and no-show behavior** to support data-driven revenue management decisions. The visuals are grouped into Forecast & Demand Analysis, Cancellation & No-Show Analysis, KPIs, and Interactive Filters.
 
-### 🔹 Interactivity
-Slicers for:
-- Hotel Branch
-- Year
-- Month
+---
+
+## 🔹 Forecast & Demand Analysis
+
+### 1. Actual vs Forecasted Bookings
+This visual compares historical actual bookings with forecasted bookings on a monthly basis.  
+- Forecasted values closely follow historical trends, indicating a well-fitted forecasting model.
+- Noticeable increases in forecasted demand during peak months highlight **seasonal booking behavior**.
+- This comparison helps stakeholders evaluate the accuracy of predictions and plan capacity accordingly.
+
+### 2. Forecasted Booking Trend Over Time
+The line chart displays the **forecasted booking volume over time**.
+- An overall upward trend indicates growing demand in the future.
+- Minor fluctuations reflect seasonality rather than random noise.
+- This trend supports strategic planning for staffing, pricing, and inventory management.
+
+### 3. Forecast Uncertainty Range (Upper & Lower Bounds)
+This chart visualizes the **forecast confidence interval** using upper and lower bounds.
+- The shaded range represents uncertainty in predictions.
+- A wider range in future months indicates increasing uncertainty as forecasts extend further.
+- This helps management understand risk levels and prepare contingency plans.
+
+---
+
+## 🔹 Cancellation & No-Show Analysis
+
+### 4. Monthly Cancellation Rate and Cancelled Bookings
+This combined visual shows:
+- **Cancellation percentage** (line)
+- **Total cancelled bookings** (area/bar)
+
+Key observations:
+- Cancellation rates remain relatively stable across months.
+- Certain months show higher cancellation volumes, often aligning with high booking periods.
+- This insight helps improve **overbooking strategies** and cancellation policies.
+
+### 5. Monthly No-Show Booking Trends
+The bar chart highlights no-show patterns across months.
+- No-show counts are relatively consistent, with slight increases in peak seasons.
+- This indicates predictable customer behavior that can be accounted for in occupancy planning.
+- Reducing no-shows can directly improve realized revenue.
+
+---
+
+## 🔹 KPIs Summary
+
+The KPI cards provide a quick snapshot of hotel performance:
+
+- **Total Bookings**: Represents overall historical booking volume.
+- **Forecasted Demand**: Indicates expected future bookings based on predictive modeling.
+- **Cancellation Percentage**: Shows the proportion of bookings that were cancelled.
+- **No-Show Count**: Highlights potential revenue leakage due to customer no-shows.
+
+These KPIs enable quick executive-level decision-making.
+
+---
+
+## 🔹 Seasonal Forecasted Demand
+
+The donut chart illustrates **forecasted demand by season**.
+- Peak demand is concentrated in specific seasons, confirming strong seasonality.
+- Understanding seasonal contribution helps optimize pricing strategies and marketing campaigns.
+- Off-season insights can be used to design promotions to improve occupancy.
+
+---
+
+## 🔹 Interactivity & Filtering
+
+The dashboard includes interactive slicers for:
+- **Hotel Branch**
+- **Year**
+- **Month**
+- **Season**
+- **Guest Country**
+
+These slicers allow users to dynamically explore trends across locations, time periods, and customer segments, making the dashboard highly flexible and business-friendly.
+
+---
+
+## 📌 Business Implications
+
+- Forecasting enables proactive demand planning and revenue optimization.
+- Cancellation and no-show analysis helps reduce revenue loss and improve booking policies.
+- Seasonal insights support dynamic pricing and targeted marketing strategies.
+- Interactive filtering empowers stakeholders to make localized and time-specific decisions.
+
+Overall, this dashboard transforms historical booking data into **actionable, forward-looking insights** that support smarter hotel revenue management.
