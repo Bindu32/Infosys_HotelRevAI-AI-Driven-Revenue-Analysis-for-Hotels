@@ -36,154 +36,83 @@ Key columns used from the `Fact_Bookings` table:
 
 ## 🧠 Forecasting Approach
 
-### 🔹 Data Preparation in Power BI
-
-- A **Date dimension table** was created to ensure all 12 months are available, even if historical data spans fewer months.
-- Monthly aggregation of booking data was performed.
-- Month sorting was handled using a **Month Number** column to ensure chronological order.
-- Modelling -> Create Table -> Date_of_each
-
-```DAX
-  Date_of_each = 
-ADDCOLUMNS (
-    CALENDAR (
-        DATE ( YEAR ( MIN ( Fact_Bookings[Date] ) ), 1, 1 ),
-        DATE ( YEAR ( MAX ( Fact_Bookings[Date]) ), 12, 31 )
-    ),
-    "Year", YEAR ( [Date] ),
-    "Month Number", MONTH ( [Date] ),
-    "Month Name", FORMAT ( [Date], "MMM" ),
-    "Year-Month", FORMAT ( [Date], "YYYY-MM" ),
-    "Month End Date", EOMONTH ( [Date], 0 )
-)
-```
-
 ### 🔹 Monthly Bookings Table (DAX)
 
 ```DAX
-Monthly_Bookings = 
-SUMMARIZE (
-    'Date_of_each',
-    'Date_of_each'[Year],
-    'Date_of_each'[Month Number],
-    'Date_of_each'[Month Name],
-    'Date_of_each'[Month End Date],
-    "Total_Bookings", COALESCE ( [Total Bookings], 0 )
-)
-)
+Monthly_Bookings = SUMMARIZE( Fact_Bookings,    Fact_Bookings[Month_End_Date],
+    "Total_Bookings", COALESCE ( [Total Bookings], 0 ))
 ```
 ### Forecasting Using Python (Google Colab)
 
 Forecasting was implemented using Facebook Prophet to model seasonality and trends in booking data.
 
 ```python
-# ==============================
-# 1. Upload file (Google Colab)
-# ==============================
+
+# 1. Upload file
 from google.colab import files
 uploaded = files.upload()
 
-# ==============================
 # 2. Imports
-# ==============================
 import pandas as pd
 from prophet import Prophet
 
-# ==============================
 # 3. Load dataset
-# ==============================
-# Make sure the filename matches exactly
 df = pd.read_csv("monthly_bookings.csv")
 
-# ==============================
-# 4. Check columns (Debug – optional)
-# ==============================
-print("Columns in dataset:", df.columns)
-
-# ==============================
-# 5. Create datetime column (ds)
-# ==============================
-# Prefer Month end date if present
-if "Month end date" in df.columns:
-    df["ds"] = pd.to_datetime(df["Month end date"])
-else:
-    # Create date using Year + Month + Day
-    df["ds"] = pd.to_datetime(
-        df["Year"].astype(str) + "-" +
-        df["Month"].astype(str) + "-" +
-        df["Day"].astype(str)
-    )
-
-# ==============================
-# 6. Rename target column to 'y'
-# ==============================
-# IMPORTANT: Column name must match exactly
+# 4. Prepare data
+df["ds"] = pd.to_datetime(df["Month_End_Date"])
 df.rename(columns={"Sum of Total_Bookings": "y"}, inplace=True)
+df = df[["ds", "y"]].sort_values("ds")
 
-# ==============================
-# 7. Verify required columns
-# ==============================
-print(df[["ds", "y"]].head())
-
-# ==============================
-# 8. Keep only Prophet-required columns
-# ==============================
-df = df[["ds", "y"]]
-
-# ==============================
-# 9. Sort by date
-# ==============================
-df = df.sort_values("ds")
-
-# ==============================
-# 10. Initialize Prophet model
-# ==============================
+# 5. Train Prophet model
 model = Prophet(
     yearly_seasonality=True,
     weekly_seasonality=False,
     daily_seasonality=False,
-    changepoint_prior_scale=0.05  # smoother trend, avoids sharp drops
+    changepoint_prior_scale=0.05
 )
-
-# ==============================
-# 11. Fit model
-# ==============================
 model.fit(df)
 
-# ==============================
-# 12. Create future dataframe (12 months)
-# ==============================
-future = model.make_future_dataframe(periods=1, freq="M")
-
-# ==============================
-# 13. Forecast
-# ==============================
+# 6. Forecast next 36 months
+future = model.make_future_dataframe(periods=36, freq="M")
 forecast = model.predict(future)
 
-# ==============================
-# 14. Fix negative forecast values (IMPORTANT)
-# ==============================
+# 7. Remove negative values
 forecast["yhat"] = forecast["yhat"].clip(lower=0)
 forecast["yhat_lower"] = forecast["yhat_lower"].clip(lower=0)
 forecast["yhat_upper"] = forecast["yhat_upper"].clip(lower=0)
 
-# ==============================
-# 15. Preview forecast
-# ==============================
-print(forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]].tail(15))
-
-# ==============================
-# 16. Export forecast to CSV
-# ==============================
-forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]].to_csv(
-    "Forecast.csv",
-    index=False
+# 8. Create full date range (2024–2026)
+full_dates = pd.date_range(
+    start="2024-01-31",
+    end="2026-12-31",
+    freq="M"
 )
 
-# ==============================
-# 17. Download file
-# ==============================
-files.download("Forecast.csv")
+full_df = pd.DataFrame({"ds": full_dates})
+
+# 9. Merge forecast with full date range
+final_forecast = full_df.merge(
+    forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]],
+    on="ds",
+    how="left"
+)
+
+# 10. Fill missing 2024 months (backfill)
+final_forecast[["yhat", "yhat_lower", "yhat_upper"]] = (
+    final_forecast[["yhat", "yhat_lower", "yhat_upper"]]
+    .fillna(method="bfill")
+)
+
+# 11. Add helper columns for Power BI
+final_forecast["Year"] = final_forecast["ds"].dt.year
+final_forecast["Month"] = final_forecast["ds"].dt.strftime("%B")
+final_forecast["Month_Number"] = final_forecast["ds"].dt.month
+
+# 12. Export final forecast
+final_forecast.to_csv("Forecast_2024_2026.csv", index=False)
+files.download("Forecast_2024_2026.csv")
+
 ```
 
 ### Power BI Forecast Integration
