@@ -151,12 +151,15 @@ All visuals are interactive with slicers: Branch, Room Type, Booking Source, and
 
 ## GitHub Repository Structure
 ```
+## Repository Structure
+
 Hotel_Business_Understand_Improve_Revenue/
- └── Milestone 4/
-     ├── Milestone4_PowerBI.pbix
-     ├── screenshots/
-     │    └── Revenue_Strategy_Dashboard.png
-     └── README.md
+|-- Milestone 4/
+    |-- Milestone4_PowerBI.pbix
+    |-- screenshots/
+        |-- Revenue_Strategy_Dashboard.png
+    |-- README.md
+
 ```
 
 ## Business Impact
