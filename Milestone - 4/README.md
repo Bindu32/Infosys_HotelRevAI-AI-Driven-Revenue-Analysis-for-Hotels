@@ -150,12 +150,14 @@ All visuals are interactive with slicers: Branch, Room Type, Booking Source, and
 - Optimize underperforming branches through promotions and targeted marketing
 
 ## GitHub Repository Structure
+```
 Hotel_Business_Understand_Improve_Revenue/
  └── Milestone 4/
      ├── Milestone4_PowerBI.pbix
      ├── screenshots/
      │    └── Revenue_Strategy_Dashboard.png
      └── README.md
+```
 
 ## Business Impact
 - Clear pricing adjustments increase revenue per room and RevPAR
